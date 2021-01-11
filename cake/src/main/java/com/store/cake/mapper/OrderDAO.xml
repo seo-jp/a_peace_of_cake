@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store.cake.dao.order.OrderDAO">
+
+	<select id="getIngredientList" parameterType="hashmap"
+		resultType="com.store.cake.dto.order.IngredientDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM INGREDIENT ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getIngredientSearchList" parameterType="com.store.cake.dto.order.IngredientSearchDTO"
+		resultType="com.store.cake.dto.order.IngredientDTO">
+    	SELECT * FROM 
+    		( SELECT A.*, ROWNUM R FROM
+    			(SELECT * FROM INGREDIENT WHERE
+    			 I_ID > 0
+    			 <include refid="search" />
+    		     ORDER BY ${sort}) A
+    		)
+    	WHERE R >= #{startRow} AND R &lt;= #{endRow}
+    </select>
+    
+    <select id="getIngredientTotalCount" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM INGREDIENT
+    </select>
+    
+    <select id="getSearchIngredientTotalCount" parameterType="com.store.cake.dto.order.IngredientSearchDTO" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM INGREDIENT
+    		WHERE 1=1
+    		<include refid="search" />
+    </select>
+
+	<sql id="search">
+		<if test="searchI_name!=null and !searchI_name.equals('')">AND REGEXP_LIKE(I_NAME, #{searchI_name})</if>
+		<if test="searchI_price!= null and !searchI_price.equals('')">AND I_PRICE = #{searchI_price}</if>
+		<if test="searchI_state!= null and !searchI_state.equals('')">AND REGEXP_LIKE(I_STATE, #{searchI_state})</if>
+		<if test="searchI_exipdate!= null and !searchI_exipdate.equals('')">AND I_EXIPDATE = #{searchI_exipdate}</if>
+		<if test="searchFromDate!= null and !searchFromDate.equals('')">AND I_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD')</if>
+		<if test="searchToDate!= null and !searchToDate.equals('')">AND I_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1</if>
+	</sql> 
+	
+	<select id="checkName" parameterType="hashmap" resultType="String">
+		SELECT NVL(I_NAME, 'false')I_NAME FROM INGREDIENT
+			WHERE I_NAME = #{i_name}
+			<if test="i_id!=null and !i_id.equals('')">AND I_ID != #{i_id}</if>
+	</select>
+	
+	<insert id="ingredientInsert" parameterType="com.store.cake.dto.order.IngredientDTO">
+		INSERT INTO INGREDIENT (I_ID, I_NAME, I_PRICE, I_STATE, I_EXIPDATE, I_REGDATE, I_IMG)
+			VALUES(INGREDIENT_ID_SEQ.NEXTVAL,#{i_name, jdbcType=VARCHAR},#{i_price, jdbcType=INTEGER}
+				   ,#{i_state, jdbcType=CHAR},#{i_exipdate, jdbcType=INTEGER}
+				   ,SYSDATE,#{i_img, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="getIngredientInfo" parameterType="int" resultType="com.store.cake.dto.order.IngredientDTO">
+    	SELECT * FROM INGREDIENT WHERE I_ID = #{i_id}
+    </select>
+    
+    <update id="ingredientUpdate" parameterType="com.store.cake.dto.order.IngredientDTO">
+    	UPDATE INGREDIENT SET
+    		I_NAME = #{i_name, jdbcType=VARCHAR},
+    		I_PRICE = #{i_price, jdbcType=INTEGER},
+    		I_STATE = #{i_state, jdbcType=CHAR},
+    		I_EXIPDATE = #{i_exipdate, jdbcType=INTEGER},
+    		<if test="i_img!=null and !i_img.equals('')"> I_IMG = #{i_img, jdbcType=VARCHAR}</if>
+    	WHERE I_ID = #{i_id}
+    </update>
+    
+    <insert id="orderInsert" parameterType="hashmap">
+	    INSERT INTO "ORDER"(O_ID,O_NAME,O_PRICE,O_AMOUNT, O_STATE, O_I_ID)VALUES(
+	    	ORDER_ID_SEQ.NEXTVAL,
+	    	(SELECT I_NAME FROM ingredient WHERE I_ID = #{o_i_id, jdbcType=INTEGER}),
+	    	(SELECT I_PRICE * #{o_amount, jdbcType=INTEGER} FROM ingredient WHERE I_ID = #{o_i_id, jdbcType=INTEGER}),
+	    	#{o_amount, jdbcType=INTEGER},
+	    	#{o_state, jdbcType=CHAR},
+	    	#{o_i_id, jdbcType=INTEGER})
+	</insert>
+	
+	<select id="orderList" parameterType="hashmap"
+		resultType="com.store.cake.dto.order.OrderDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT O.O_ID O_ID,O.O_NAME O_NAME,O.O_AMOUNT O_AMOUNT,O.O_PRICE O_PRICE,
+						I.I_PRICE I_PRICE,O.O_STATE O_STATE,I.I_IMG I_IMG,O.O_REGDATE O_REGDATE
+                FROM "ORDER" O LEFT OUTER JOIN INGREDIENT I ON O.O_I_ID = I_ID
+                WHERE O_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+                ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getOrderSearchList" parameterType="com.store.cake.dto.order.OrderSearchDTO"
+		resultType="com.store.cake.dto.order.OrderDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT O.O_ID O_ID,O.O_NAME O_NAME,O.O_AMOUNT O_AMOUNT,O.O_PRICE O_PRICE,
+						I.I_PRICE I_PRICE,O.O_STATE O_STATE,I.I_IMG I_IMG,O.O_REGDATE O_REGDATE
+                FROM "ORDER" O LEFT OUTER JOIN INGREDIENT I ON O.O_I_ID = I_ID
+                WHERE O_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1
+                <include refid="search2" />
+                ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getOrderTotalCount" parameterType="hashmap" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM "ORDER"
+    		WHERE O_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+    </select>
+    
+    <select id="getSearchOrderTotalCount" parameterType="com.store.cake.dto.order.OrderSearchDTO" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM "ORDER"
+    		WHERE O_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1
+    		<include refid="search2" />
+    </select>
+    
+    <update id="orderCancel" parameterType="Integer">
+    	UPDATE "ORDER" SET
+    		O_STATE = 3
+    	WHERE O_ID = #{o_id}
+    </update>
+    
+    <sql id="search2">
+		<if test="searchO_name!=null and !searchO_name.equals('')">AND REGEXP_LIKE(O_NAME, #{searchO_name})</if>
+		<if test="searchO_state!= null and !searchO_state.equals('')">AND REGEXP_LIKE(O_STATE, #{searchO_state})</if>
+	</sql> 
+
+</mapper>

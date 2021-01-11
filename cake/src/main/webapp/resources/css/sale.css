@@ -1,0 +1,401 @@
+@charset "UTF-8";
+
+/* SALE */
+
+.result_p span{
+	font-weight: bold;
+	color: #0053ff;
+}
+
+.oddTr{
+	background: rgba(255, 99, 132, 0.1);
+}
+
+.list tbody tr th:nth-child(1),.list tbody tr td:nth-child(1){ /* No */
+	width: 5%;
+}
+.list tbody tr th:nth-child(2),.list tbody tr td:nth-child(2){ /* name */
+	width: 20%;
+}
+.list tbody tr th:nth-child(3),.list tbody tr td:nth-child(3){/* state */
+	width: 10%;
+}
+.list tbody tr th:nth-child(4),.list tbody tr td:nth-child(4),/* amount */
+.list tbody tr th:nth-child(5),.list tbody tr td:nth-child(5){/* discount */
+	width: 10%;
+}
+
+.list tbody tr th:nth-child(6),.list tbody tr td:nth-child(6),/* price */
+.list tbody tr th:nth-child(7),.list tbody tr td:nth-child(7){/* all price */
+	width: 15%;
+}
+
+.list tbody tr th:nth-child(8),.list tbody tr td:nth-child(8){ /* regdate */
+	width: 15%;
+	border-right: 1px solid #ddd;
+}
+
+/* GRAPH */
+.saleGraph_p.result_p {
+	width: 100%;
+	text-align: center;
+	float: left;
+	font-weight: bold;
+}
+
+.dateSearch {
+	float: left;
+}
+
+.dateSearch input {
+    height: 35px;
+    margin-left: 20px;
+    padding-left: 10px;
+    border: 1px solid #ddd;
+}
+
+#myChart {
+	height: 550px!important;
+}
+
+.saleGraph_v.viewType_box input[type="radio"]{
+	border: 1px solid #ddd;
+	margin-top:3px;
+}
+
+/* POS */
+
+.pos_wrap {
+	width: 100wv;
+	height: 100vh;
+	padding: 0 15% 3% 15%;
+    background: url("../images/common/login_bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+
+.top_pos {
+	width: 100%;
+	float: left;
+	margin: 1% 0;
+}
+
+.top_pos li {
+	float: left;
+	width: calc(100%/3);
+	font-size: 15px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.top_pos li:first-child {
+	padding-left: 2%;
+}
+
+.top_pos li:nth-child(2) {
+	text-align: center;
+}
+
+.top_pos li:last-child {
+	text-align: right;
+	padding-right: 2%;
+}
+
+.pos {
+	width: 100%;
+	height: 94%;
+	float: left;
+	border: 1px solid #fff;
+	background: rgba(255,255,255,0.3);
+	border-radius: 40px;
+}
+
+.pos_list {
+	width: 100%;
+	height: 50vh;
+	float: left;
+	border-bottom: 1px solid #fff;
+	padding: 30px;
+}
+
+.pos_list table {
+	display: grid;
+	height: 90%;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.pos_list table tr {
+	width: 100%;
+	text-align: center;
+	display: table;
+	border-bottom: 1px solid #fff;
+}
+
+.pos_list table tr th {
+	background: #ffffffad;
+	height: 40px;
+}
+
+.pos_list table tr td {
+	height: 60px;
+}
+
+.pos_list table tr th,.pos_list table tr td {
+	border-right: 1px solid #fff;
+}
+
+.pos_list table tr th:nth-child(1),.pos_list table tr td:nth-child(1) { width: 30%; } /* name */
+.pos_list table tr th:nth-child(2),.pos_list table tr td:nth-child(2) { width: 15%; } /* price */
+.pos_list table tr th:nth-child(3),.pos_list table tr td:nth-child(3) { width: 15%; } /* dc */
+.pos_list table tr th:nth-child(4),.pos_list table tr td:nth-child(4) { width: 15%; } /* amount */
+.pos_list table tr th:nth-child(5),.pos_list table tr td:nth-child(5) { width: 15%; } /* allprice */
+.pos_list table tr th:nth-child(6),.pos_list table tr td:nth-child(6) { width: 10%; border-right: 0; } /* btn */
+.pos_list table tr th:nth-child(7),.pos_list table tr td:nth-child(7) { display: none; }
+
+.pos_list table tr td:nth-child(3) input ,.pos_list table tr td:nth-child(4) input {
+	border: 1px solid #ddd;
+	height: 40px;
+	border-radius: 10px;
+	padding-left: 10px;
+}
+
+.pos_list tbody tr td:nth-child(6) input {
+	width: 80px;
+	height: 40px;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	background: #fafafa;
+	border-radius: 10px;
+	font-size: 15px;
+}
+
+.pos_list tbody tr td:nth-child(6) input:hover {
+	background: #fafafa2b;
+}
+
+.pos_list p{
+    margin-top: 10px;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    padding-right: 21px;
+}
+
+.pos_menu {
+	width: 100%;
+	height: 30vh;
+	float: left;
+	border-bottom: 1px solid #fff;
+	position:relative;
+}
+
+.pos_menu ul {
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+.pos_menu ul li {
+	margin: 1%;
+	width: calc(90%/5);
+	height: calc(82%/2);
+	float: left;
+	display: table;
+	background: #ffc5c573;
+	border-radius: 40px;
+	border: 1px solid #ffffffad;
+	cursor: pointer;
+}
+
+.pos_menu ul li:hover {
+	background: #ffc5c514;
+}
+
+.pos_menu ul li span {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    display: table-cell;
+    width: 1%;
+}
+
+.pagingImg a {
+    top: calc(100%/2);
+    position: absolute;
+    
+}
+
+.pagingImg a.left {
+	transform: rotate(180deg);
+	left: 10px;
+}
+.pagingImg a.right {
+	right: 10px;
+}
+
+.pagingImg img {
+	height: 20px;
+}
+
+.pos_confirm {
+	width: 100%;
+	float: left;
+	padding:0 30px;
+}
+
+.pos_confirm ul {
+	float: right;
+	margin-top: 13px;
+}
+
+.pos_confirm ul li{
+	width: 150px;
+	height: 50px;
+	float: left;
+	border: 1px solid #ffffffad;
+	cursor: pointer;
+	background: #fafafa2b;
+	border-radius: 10px;
+	margin-left: 20px;
+}
+
+.pos_confirm ul li:hover {
+	background: #fafafa00;
+}
+
+.pos_confirm ul li a{
+	width: 1%;
+	height: 48px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+/* POS REFUND */
+
+.pos_search {
+	width: 100%;
+	height: 20vh;
+	float: left;
+	border-bottom: 1px solid #fff;
+	padding: 38px;
+	position:relative;
+}
+
+.pos_search h2 {
+	text-align: center;
+	font-size: 26px;
+	font-weight: bold;
+}
+
+.pos_search form {
+	width: 436px;
+	margin: 25px auto;
+	text-align: center;
+}
+
+.pos_search form span {
+	font-size: 20px;
+}
+
+.pos_search form div:nth-child(1) input{
+	margin-left: 8px;
+	width: 300px;
+	height: 50px;
+	padding: 0 20px;
+	font-size: 18px;
+}
+
+.pos_search form div {
+	float: left;
+}
+
+.pos_search form div:nth-child(2) input{
+	cursor: pointer;
+	margin-left: 15px;
+	width: 100px;
+	height: 50px;
+	font-size: 18px;
+}
+
+.pos_refund.pos_list {
+	height: 60vh;
+}
+
+.pos_refund.pos_list table tr th:nth-child(1),.pos_refund.pos_list table tr td:nth-child(1) { width: 10%; } /* chk */
+.pos_refund.pos_list tbody tr th:nth-child(1) input,.pos_refund.pos_list tbody tr td:nth-child(1) input{
+	width: 20px;
+	height: 20px;
+}
+.pos_refund.pos_list table tr th:nth-child(2),.pos_refund.pos_list table tr td:nth-child(2) { width: 30%; } /* name */
+.pos_refund.pos_list table tr th:nth-child(6),.pos_refund.pos_list table tr td:nth-child(6) { width: 15%; border-right: 0; } /* allprice */
+
+
+
+@media screen and (min-width: 1023px) and (max-width: 1919px) {
+	
+	.saleGraph_p.result_p {
+		margin-bottom: 10px;
+	}
+	
+	.dateSearch input {
+		height: 25px;
+		font-size: 12px;
+	}
+	
+	#myChart {
+		height: 350px!important;
+	}
+	
+	/* POS */
+	
+	.pos_confirm ul li {
+		width: 130px;
+		height: 30px;
+	}
+	
+	.pos_confirm ul li a {
+		height: 28px;
+		font-size: 15px;
+	}
+	
+	.pos_menu ul li span {
+		font-size: 13px;
+	}
+	
+	.pos_list tr th, .pos_list tr td, .pos_list tr td input {
+		font-size: 13px;
+	}
+	
+	.pos_list tbody tr td:nth-child(6) input {
+		width: 40px; 
+		height: 25px;
+	}
+	
+	.pos_list table tr td:nth-child(3) input, .pos_list table tr td:nth-child(4) input{
+		width: 40px;
+		height: 25px;
+	}
+	
+	.pos_search h2 {
+		font-size: 20px;
+	}
+	
+	.pos_search form {
+		margin: 15px auto;
+	}
+	
+	.pos_search form div:nth-child(1) input {
+		height: 30px;
+	}
+	
+	.pos_search form div:nth-child(2) input {
+		height: 30px;
+	}
+	
+}

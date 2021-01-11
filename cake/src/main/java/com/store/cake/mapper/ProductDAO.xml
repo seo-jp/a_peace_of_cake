@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store.cake.dao.product.ProductDAO">
+
+	<select id="getProductList" parameterType="hashmap"
+		resultType="com.store.cake.dto.product.ProductDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM PRODUCT ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getProductSearchList" parameterType="com.store.cake.dto.product.ProductSearchDTO"
+		resultType="com.store.cake.dto.product.ProductDTO">
+    	SELECT * FROM 
+    		( SELECT A.*, ROWNUM R FROM
+    			(SELECT * FROM PRODUCT WHERE
+    			 P_ID > 0
+    			 <include refid="search" />
+    		     ORDER BY ${sort}) A
+    		)
+    	WHERE R >= #{startRow} AND R &lt;= #{endRow}
+    </select>
+    
+    <select id="getProductTotalCount" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM PRODUCT
+    </select>
+    
+    <select id="getSearchProductTotalCount" parameterType="com.store.cake.dto.product.ProductSearchDTO" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM PRODUCT
+    		WHERE 1=1
+    		<include refid="search" />
+    </select>
+
+	<sql id="search">
+		<if test="searchP_name!=null and !searchP_name.equals('')">AND REGEXP_LIKE(P_NAME, #{searchP_name})</if>
+		<if test="searchP_price!= null and !searchP_price.equals('')">AND P_PRICE = #{searchP_price}</if>
+		<if test="searchP_state!= null and !searchP_state.equals('')">AND REGEXP_LIKE(P_STATE, #{searchP_state})</if>
+		<if test="searchP_memo!= null and !searchP_memo.equals('')">AND REGEXP_LIKE(P_MEMO, #{searchP_memo})</if>
+		<if test="searchP_exipdate!= null and !searchP_exipdate.equals('')">AND P_EXIPDATE = #{searchP_exipdate}</if>
+		<if test="searchFromDate!= null and !searchFromDate.equals('')">AND P_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD')</if>
+		<if test="searchToDate!= null and !searchToDate.equals('')">AND P_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1</if>
+	</sql> 
+	
+	<select id="checkName" parameterType="hashmap" resultType="String">
+		SELECT NVL(P_NAME, 'false')P_NAME FROM PRODUCT
+			WHERE P_NAME = #{p_name}
+			<if test="p_id!=null and !p_id.equals('')">AND P_ID != #{p_id}</if>
+	</select>
+	
+	<insert id="productInsert" parameterType="com.store.cake.dto.product.ProductDTO">
+		INSERT INTO PRODUCT (P_ID, P_NAME, P_PRICE, P_STATE, P_MEMO, P_EXIPDATE, P_REGDATE, P_IMG)
+			VALUES(PRODUCT_ID_SEQ.NEXTVAL,#{p_name, jdbcType=VARCHAR},#{p_price, jdbcType=INTEGER}
+				   ,#{p_state, jdbcType=CHAR},#{p_memo, jdbcType=VARCHAR},#{p_exipdate, jdbcType=INTEGER}
+				   ,SYSDATE,#{p_img, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="getProductInfo" parameterType="int" resultType="com.store.cake.dto.product.ProductDTO">
+    	SELECT * FROM PRODUCT WHERE P_ID = #{p_id}
+    </select>
+    
+    <update id="productUpdate" parameterType="com.store.cake.dto.product.ProductDTO">
+    	UPDATE PRODUCT SET
+    		P_NAME = #{p_name, jdbcType=VARCHAR},
+    		P_PRICE = #{p_price, jdbcType=INTEGER},
+    		P_STATE = #{p_state, jdbcType=CHAR},
+    		P_MEMO = #{p_memo, jdbcType=VARCHAR},
+    		P_EXIPDATE = #{p_exipdate, jdbcType=INTEGER},
+    		<if test="p_img!=null and !p_img.equals('')"> P_IMG = #{p_img, jdbcType=VARCHAR}</if>
+    	WHERE P_ID = #{p_id}
+    </update>
+
+	<delete id="productDelete" parameterType="hashmap">
+		DELETE FROM PRODUCT WHERE P_ID IN
+		<foreach item="item" index="index" collection="p_ids" open="(" separator="," close=")">
+        	#{item}
+   	 	</foreach>
+	</delete>
+
+</mapper>

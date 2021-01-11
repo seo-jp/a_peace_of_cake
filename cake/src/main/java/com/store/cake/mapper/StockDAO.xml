@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store.cake.dao.stock.StockDAO">
+	
+	<select id="getStockList" parameterType="hashmap"
+		resultType="com.store.cake.dto.stock.StockDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT S.S_ID,S.S_NAME,S.S_AMOUNT,S.S_MANUFDATE,S.S_EXIPDATE,
+						S.S_CATEGORY,S.S_STATE,I.I_IMG,P.P_IMG
+                FROM STOCK S 
+                	LEFT OUTER JOIN "ORDER" O ON S.S_O_ID = O.O_ID
+                	LEFT OUTER JOIN INGREDIENT I ON O.O_I_ID = I.I_ID
+                	LEFT OUTER JOIN PRODUCT P ON S.S_P_ID = P.P_ID
+                	WHERE S.S_AMOUNT > 0 AND REGEXP_LIKE(S.S_STATE, #{state})
+                	<if test='!viewType.equals("A")'>AND REGEXP_LIKE(S.S_CATEGORY, #{viewType})</if>
+                ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getStockSearchList" parameterType="com.store.cake.dto.stock.StockSearchDTO"
+		resultType="com.store.cake.dto.stock.StockDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT S.S_ID,S.S_NAME,S.S_AMOUNT,S.S_MANUFDATE,S.S_EXIPDATE,
+						S.S_CATEGORY,S.S_STATE,I.I_IMG,P.P_IMG
+                FROM STOCK S 
+                	LEFT OUTER JOIN "ORDER" O ON S.S_O_ID = O.O_ID
+                	LEFT OUTER JOIN INGREDIENT I ON O.O_I_ID = I.I_ID
+                	LEFT OUTER JOIN PRODUCT P ON S.S_P_ID = P.P_ID
+                WHERE S.S_AMOUNT > 0
+                <include refid="search" />
+                ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getStockTotalCount" parameterType="hashmap" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM STOCK
+    	WHERE S_AMOUNT > 0 AND REGEXP_LIKE(S_STATE, #{state})
+    	<if test='!viewType.equals("A")'>AND REGEXP_LIKE(S_CATEGORY, #{viewType})</if>
+    </select>
+    
+    <select id="getSearchStockTotalCount" parameterType="com.store.cake.dto.stock.StockSearchDTO" resultType="Integer">
+    	SELECT NVL(COUNT(*),0) FROM STOCK
+    	WHERE S_AMOUNT > 0
+    	<include refid="search" />
+    </select>
+    
+    <sql id="search">
+		<if test="searchS_name!=null and !searchS_name.equals('')">AND REGEXP_LIKE(S_NAME, #{searchS_name})</if>
+		<if test="searchS_state!= null and !searchS_state.equals('')">AND REGEXP_LIKE(S_STATE, #{searchS_state})</if>
+		<if test="searchFromDate1!= null and !searchFromDate1.equals('')">AND S_MANUFDATE >= TO_DATE(#{searchFromDate1},'YYYY-MM-DD')</if>
+		<if test="searchToDate1!= null and !searchToDate1.equals('')">AND S_MANUFDATE &lt; TO_DATE(#{searchToDate1},'YYYY-MM-DD')+1</if>
+		<if test="searchFromDate2!= null and !searchFromDate2.equals('')">AND S_EXIPDATE >= TO_DATE(#{searchFromDate2},'YYYY-MM-DD')</if>
+		<if test="searchToDate2!= null and !searchToDate2.equals('')">AND S_EXIPDATE &lt; TO_DATE(#{searchToDate2},'YYYY-MM-DD')+1</if>
+		<if test='!viewType.equals("A")'>AND REGEXP_LIKE(S_CATEGORY, #{viewType})</if>
+	</sql> 
+	
+	<update id="stockUpdate" parameterType="hashmap">
+    	UPDATE STOCK SET
+    		S_AMOUNT = #{s_amount, jdbcType=INTEGER}
+    	WHERE S_ID = #{s_id}
+    </update>
+    
+    <select id="chkStock" parameterType="hashmap" resultType="int">
+    	<!-- 재고값 - pos값이 양수(값이있음) 일때 1, 0일때 (값이 딱 맞음) 1, 음수(재고부족) 일때 0출력 -->
+    	SELECT DECODE(SIGN(A-#{s_amount}),1, 1,0,1,0) FROM
+    	(SELECT NVL(SUM(S_AMOUNT),0) A FROM STOCK WHERE S_P_ID = ${s_p_id})
+    </select>
+    
+    <update id="stockUpdate2" parameterType="hashmap">
+    	UPDATE STOCK SET S_AMOUNT = (S_AMOUNT - 1)
+    	WHERE S_ID = (SELECT MAX(S_ID) KEEP (DENSE_RANK FIRST ORDER BY S_REGDATE) S_ID FROM STOCK
+            		  WHERE S_P_ID = #{s_p_id} AND S_AMOUNT > 0 GROUP BY S_P_ID)
+    </update>
+    
+    <update id="stockStateUpdate">
+    	UPDATE STOCK SET S_STATE = '0' WHERE S_AMOUNT = 0
+    </update>
+    
+    <insert id="stockInsert" parameterType="hashmap">
+	    INSERT INTO STOCK
+	    	SELECT 
+	    		STOCK_ID_SEQ.NEXTVAL,
+	    		P_NAME,
+	    		'P',
+	    		#{p_amount},
+	    		'0',
+	    		SYSDATE,
+	    		SYSDATE + P_EXIPDATE,
+	    		SYSDATE,
+	    		null,
+	    		#{p_id}
+	    	FROM PRODUCT WHERE P_ID=#{p_id}
+	</insert>
+	
+	
+
+</mapper>

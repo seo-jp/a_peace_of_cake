@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+	
+	<tiles-definitions>
+	
+	<!-- except -->
+     <definition name="except.*.*" template="/WEB-INF/views/inc/except.jsp">
+	 	<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+	 </definition>
+	 
+	 <!-- return home.index -->
+	 <definition name="home.*" template="/WEB-INF/views/inc/layout.jsp">
+	 	<put-attribute name="header"  value="/WEB-INF/views/inc/header.jsp"></put-attribute>
+	 	<put-attribute name="footer"  value="/WEB-INF/views/inc/footer.jsp"></put-attribute>
+	 	<put-attribute name="content" value="/WEB-INF/views/{1}.jsp"></put-attribute>
+	 </definition>
+	 
+	 <!-- return *.* -->
+	 <definition name="*.*" template="/WEB-INF/views/inc/layout.jsp">
+		<put-attribute name="header"  value="/WEB-INF/views/inc/header.jsp" />
+		<put-attribute name="footer"  value="/WEB-INF/views/inc/footer.jsp" />
+		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+
+</tiles-definitions>
+
+
+
+
+
+
+

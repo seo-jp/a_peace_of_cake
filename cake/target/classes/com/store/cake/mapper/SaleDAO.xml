@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store.cake.dao.sale.SaleDAO">
+	
+	<select id="getSaleList" parameterType="hashmap"
+		resultType="com.store.cake.dto.sale.SaleDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM SALE
+				 WHERE S_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+				 ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getSaleSearchList" parameterType="com.store.cake.dto.sale.SaleSearchDTO"
+		resultType="com.store.cake.dto.sale.SaleDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM SALE
+				 WHERE S_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1
+                <include refid="search" />
+                ORDER BY ${sort}) A
+			)
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+
+	<select id="getSaleTotalCount" parameterType="hashmap" resultType="HashMap">
+    	SELECT NVL(COUNT(*),0) AS CNT , NVL(SUM(S_ALLPRICE),0) AS SUM FROM SALE
+    	WHERE S_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+    </select>
+    
+    <select id="getSearchSaleTotalCount" parameterType="com.store.cake.dto.sale.SaleSearchDTO" resultType="HashMap">
+    	SELECT NVL(COUNT(*),0) AS CNT , NVL(SUM(S_ALLPRICE),0) AS SUM FROM SALE
+    		WHERE S_REGDATE >= TO_DATE(#{searchFromDate},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{searchToDate},'YYYY-MM-DD')+1
+    		<include refid="search" />
+    </select>
+    
+    <select id="getMaxGroupID" resultType="Integer">
+    	SELECT NVL(MAX(S_GROUP_ID + 1),1) FROM SALE
+    </select>
+    
+    <insert id="saleInsert" parameterType="hashmap">
+    	INSERT INTO SALE
+	    	SELECT 
+	    		SALE_ID_SEQ.NEXTVAL,
+	    		#{s_group_id},
+	    		P_NAME,
+	    		P_PRICE,
+	    		#{s_allprice},
+	    		#{s_discount},
+	    		'0',
+	    		SYSDATE,
+	    		#{s_p_id},
+	    		#{s_amount}
+	    	FROM PRODUCT WHERE P_ID=#{s_p_id}
+    </insert>
+    
+    <sql id="search">
+		<if test="searchS_name!=null and !searchS_name.equals('')">AND REGEXP_LIKE(S_NAME, #{searchS_name})</if>
+		<if test="searchS_state!= null and !searchS_state.equals('')">AND REGEXP_LIKE(S_STATE, #{searchS_state})</if>
+	</sql> 
+	
+	<select id="getPosRefundList" parameterType="Integer"
+		resultType="com.store.cake.dto.sale.SaleDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM SALE
+				 WHERE REGEXP_LIKE(S_STATE, '0') AND S_GROUP_ID = #{s_group_id}) A
+			)
+	</select>
+	
+	<update id="posRefund" parameterType="hashmap">
+		UPDATE SALE SET S_STATE = '1'
+		WHERE S_ID IN
+		<foreach item="item" index="index" collection="s_ids" open="(" separator="," close=")">
+        	#{item}
+   	 	</foreach>
+	</update>
+	
+	<select id="getGraphDay" parameterType="hashmap" resultType="com.store.cake.dto.sale.SaleGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) DATA 
+		FROM (
+		     SELECT DECODE(LENGTH(ROWNUM-1), 1, '0'||TO_CHAR(ROWNUM-1), TO_CHAR(ROWNUM-1)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= 24 )A 
+		    LEFT OUTER JOIN 
+		        (SELECT TO_CHAR ( s_regdate, 'HH24' ) AS S_REGDATE, SUM(s_allprice) AS CNT 
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM-DD' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM-DD' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'HH24' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE)
+		    ORDER BY A.S_REGDATE
+	</select>
+	
+	<select id="getGraphMonth" parameterType="hashmap" resultType="com.store.cake.dto.sale.SaleGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) DATA
+		FROM (
+		    SELECT DECODE(LENGTH(ROWNUM), 1, '0'||TO_CHAR(ROWNUM), TO_CHAR(ROWNUM)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= TO_NUMBER(SUBSTR(LAST_DAY(TO_CHAR(TO_DATE(#{showDateFrom},'YYYY-MM'),'YYYYMM')||'01'), 7, 2)) )A 
+		    LEFT OUTER JOIN 
+		        (SELECT TO_CHAR (s_regdate, 'DD' ) AS S_REGDATE, SUM(s_allprice) AS CNT 
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'DD' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE) ORDER BY A.S_REGDATE
+	</select>
+	
+	<select id="getGraphYear" parameterType="hashmap" resultType="com.store.cake.dto.sale.SaleGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) DATA
+		FROM (
+		     SELECT DECODE(LENGTH(ROWNUM), 1, '0'||TO_CHAR(ROWNUM), TO_CHAR(ROWNUM)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= 12 )A 
+		    LEFT OUTER JOIN 
+		        (SELECT TO_CHAR ( s_regdate, 'MM' ) AS S_REGDATE, SUM(s_allprice) AS CNT 
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'MM' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE)
+		    ORDER BY A.S_REGDATE
+	</select>
+	
+	<select id="getPosList" parameterType="hashmap"
+		resultType="com.store.cake.dto.product.ProductDTO">
+		SELECT * FROM 
+			( SELECT A.*, ROWNUM R FROM
+				(SELECT * FROM PRODUCT
+				 WHERE REGEXP_LIKE(P_STATE, '0')
+				 ORDER BY P_ID DESC) A
+			)
+	</select>
+	
+
+</mapper>

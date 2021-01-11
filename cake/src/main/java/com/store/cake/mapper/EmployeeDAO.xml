@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.store.cake.dao.employee.EmployeeDAO">
+
+   		<select id="idCheck" resultType="String">
+        	SELECT NVL(max(e_id), 'id_false') FROM EMPLOYEE WHERE E_ID = #{e_id}
+    	</select>
+    	
+   		<select id="pwdCheck" resultType="String">
+        	SELECT NVL(max(e_pwd), 'pwd_false') FROM EMPLOYEE WHERE E_PWD = #{e_pwd}
+    	</select>
+
+		<select id="getEmpInfo" parameterType="String" resultType="com.store.cake.dto.employee.EmployeeDTO">
+			SELECT * FROM EMPLOYEE WHERE E_ID = #{e_id}
+		</select>
+
+    </mapper>

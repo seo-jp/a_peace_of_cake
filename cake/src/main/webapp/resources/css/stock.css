@@ -1,0 +1,36 @@
+@charset "UTF-8";
+ 
+.list tbody tr th:nth-child(1),.list tbody tr td:nth-child(1){ /* No */ 
+	width: 5%;
+}
+.list tbody tr th:nth-child(2),.list tbody tr td:nth-child(2){ /* Img */ 
+	width: 12%;
+}
+.list tbody tr th:nth-child(3),.list tbody tr td:nth-child(3){ /* category */
+	width: 5%;
+}
+.list tbody tr th:nth-child(4),.list tbody tr td:nth-child(4){ /* name */
+	width: 17%;
+}
+.list tbody tr th:nth-child(5),.list tbody tr td:nth-child(5){ /* state */
+	width: 5%;
+}
+.list tbody tr th:nth-child(6),.list tbody tr td:nth-child(6){ /* manufdate */
+	width: 15%;
+}
+.list tbody tr th:nth-child(7),.list tbody tr td:nth-child(7){ /* exipdate */
+	width: 15%;
+}
+.list tbody tr th:nth-child(8),.list tbody tr td:nth-child(8){ /* amount1 */
+	width: 9%;
+}
+.list tbody tr th:nth-child(9),.list tbody tr td:nth-child(9){ /* amount2 */
+	width: 8%;
+}
+
+/* btn */
+
+.list tbody tr th:last-child,.list tbody tr td:last-child{
+	width: 10%;
+	border-right: 1px solid #ddd;
+}
