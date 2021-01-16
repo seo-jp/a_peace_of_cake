@@ -46,16 +46,16 @@
 							<tr>
 								<td><input name="check" type="checkbox" value="${list.s_id}" /></td>
 								<td>${list.s_name}</td>
-								<td>${list.s_price}￥</td>
+								<td>￥<fmt:formatNumber value="${list.s_price }" pattern="#,###,###" /></td>
 								<td>${list.s_discount}％</td>
 								<td>${list.s_amount}個</td>
-								<td><input id="${list.s_id}" type="hidden" value="${list.s_allprice}" />${list.s_allprice}￥</td>
+								<td><input id="${list.s_id}" type="hidden" value="${list.s_allprice}" />￥${list.s_allprice}</td>
 							</tr>
 						</c:forEach>
 						
 					</tbody>
 				</table>
-				<p>総　払い戻し金額 : <span id="all">0</span> ￥</p>
+				<p>総　払い戻し金額 : ￥<span id="all">0</span></p>
 			</div>
 			
 			<div class="pos_confirm">
@@ -114,17 +114,13 @@
 			let res = 0;
 			let arr = [];
 			let cnt = document.querySelectorAll("input[name=check]:checked").length;
-			
-			console.log(cnt);
 
 			for (var i=0; i<cnt; i++) {
 	        	 arr[i] = document.querySelectorAll("input[name=check]:checked")[i].value;
 	        	 res += Number(document.getElementById(arr[i]).value);
 	        }
 
-			console.log(arr);
-			console.log(res);
-			document.querySelector('#all').innerHTML = res;
+			document.querySelector('#all').innerHTML = res.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 
 

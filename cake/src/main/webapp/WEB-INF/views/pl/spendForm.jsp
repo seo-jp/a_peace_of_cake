@@ -35,7 +35,7 @@
 				</tr>
 				<tr>
 					<th><label for="sp_price">価格</label></th>
-					<td><input type="number" name="sp_price" id="sp_price" min="1" max="1000000" />￥</td>
+					<td>￥<input type="number" name="sp_price" id="sp_price" min="1" max="1000000" /></td>
 				</tr>
 			</table>
 			

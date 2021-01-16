@@ -92,7 +92,7 @@
 						</td>
 						<td>${list.name}</td>
 						<td>${list.amount}個</td>
-						<td>${list.price}￥</td>
+						<td>￥<fmt:formatNumber value="${list.price }" pattern="#,###,###" /></td>
 						<td><fmt:formatDate value="${list.regdate }" pattern="yyyy.MM.dd HH時mm分" /></td>
 					</tr>
 				</c:forEach>

@@ -12,8 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUpload {
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileUpload.class);
-	private static final String uploadPath = "D:\\dev\\springmcv_workspace\\cake\\src\\main\\webapp\\resources\\images\\";
-	
+	private static final String uploadPath = "C:\\Users\\seoyun\\git\\piece_of_cake\\cake\\src\\main\\webapp\\resources\\images\\";
 	public String uploadFile(MultipartFile file, String folder) throws Exception{
 		
 		logger.info("file name : " + file.getOriginalFilename());

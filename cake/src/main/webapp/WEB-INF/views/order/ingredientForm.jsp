@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +50,7 @@
 				<tr>	
 					<th><label for="file">写真</label></th>
 					<td>
-						<input type="file" name="file" id="file" accept="images/*" onchange="setThumb(event)" />
+						<input type="file" name="file" id="file" accept="images/*;capture=camera" onchange="setThumb(event)" />
 					</td>
 					<td class="uploadView">
 						<a onClick="deleteFile()">削除</a>
@@ -61,7 +62,7 @@
 				</tr>
 				<tr>
 					<th><label for="i_price">価格</label></th>
-					<td colspan="2"><input type="number" name="i_price" id="i_price" min="1" max="1000000" value="${dto.i_price}" />￥</td>
+					<td colspan="2">￥<input type="number" name="i_price" id="i_price" min="1" max="1000000" value="${dto.i_price}" /></td>
 				</tr>
 				<tr>
 						<th>状態</th>

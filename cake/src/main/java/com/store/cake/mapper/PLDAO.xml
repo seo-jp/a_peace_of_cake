@@ -8,7 +8,7 @@
 	<select id="getPLList" parameterType="hashmap"
 		resultType="com.store.cake.dto.pl.PLDTO">
 		SELECT * FROM 
-    	( SELECT S_ID, O_ID, SP_ID, CATEGORY, NAME, AMOUNT, PRICE, REGDATE, ROWNUM R FROM
+    	( SELECT S_ID, O_ID, SP_ID, CATEGORY, NAME, AMOUNT, PRICE, REGDATE, ROW_NUMBER() OVER(ORDER BY REGDATE DESC) R FROM
      		(SELECT S_ID, null O_ID, null SP_ID, '0' CATEGORY, S_NAME NAME, S_AMOUNT AMOUNT, S_ALLPRICE PRICE, S_REGDATE REGDATE FROM SALE S
       		 WHERE S_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
       		 AND REGEXP_LIKE(S_STATE, '0')
@@ -19,7 +19,7 @@
       		 UNION ALL
       		 SELECT null S_ID,null O_ID, SP_ID, '2' CATEGORY, SP_NAME NAME, null AMOUNT, (SP_PRICE*-1) PRICE, SP_REGDATE REGDATE FROM SPEND SP
       		 WHERE SP_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND SP_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
-    	) ORDER BY REGDATE) 
+    	)ORDER BY REGDATE DESC)
 		WHERE R >= #{startRow} AND R &lt;= #{endRow}
 	</select>
 	

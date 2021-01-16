@@ -45,28 +45,27 @@
 						<th><label for="searchI_name">材料名</label></th>
 						<td><input type="text" name="searchI_name" id="searchI_name"
 							maxlength="100" value="${search.searchI_name}" /></td>
-							<th><label>状態</label></th>
+						<th><label for="searchI_exipdate">賞味期限</label></th>
+							<td><input type="number" name="searchI_exipdate"
+							id="searchI_exipdate" min="1" max="5000"
+							value="${search.searchI_exipdate}" />
+							<span>日</span></td>	
+					</tr>
+					<tr>
+						<th><label>状態</label></th>
 						<td><label for="searchI_state1">発注可能</label> <input
 							type="radio" name="searchI_state" id="searchI_state1" value="0"
 							<c:if test="${search.searchI_state eq '0'}">checked</c:if> /> <label
 							for="searchI_state2">発注不可</label> <input type="radio"
 							name="searchI_state" id="searchI_state2" value="1"
 							<c:if test="${search.searchI_state eq '1'}">checked</c:if> /></td>
-						
 					</tr>
 					<tr>
 						<th><label for="searchI_price">価格</label></th>
-						<td><input type="number" name="searchI_price"
+						<td><span>￥</span> <input type="number" name="searchI_price"
 							id="searchI_price" min="1" max="1000000"
 							value="${search.searchI_price}" />
-							<span>￥</span></td>	
-					</tr>
-					<tr>
-						<th><label for="searchI_exipdate">賞味期限</label></th>
-							<td><input type="number" name="searchI_exipdate"
-							id="searchI_exipdate" min="1" max="5000"
-							value="${search.searchI_exipdate}" />
-							<span>日</span></td>
+							</td>
 					</tr>
 					<tr>
 						<td><input type="submit" value="検索" /></td>
@@ -104,7 +103,7 @@
 
 						<td onClick="ingredientEdit(${list.i_id})">${list.i_name}</td>
 
-						<td>${list.i_price }￥</td>
+						<td>￥<fmt:formatNumber value="${list.i_price }" pattern="#,###,###" /></td>
 
 						<td><c:if test="${list.i_state eq '0'.charAt(0) }">発注可能</c:if>
 							<c:if test="${list.i_state eq '1'.charAt(0) }">発注不可</c:if></td>

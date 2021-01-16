@@ -34,7 +34,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>総額 : <span id="all">0</span> ￥</p>
+				<p>総額 : ￥<span id="all">0</span></p>
 			</div>
 			
 			<div class="pos_menu">
@@ -108,12 +108,12 @@
 	
 				tab.appendChild(newTr);
 				newTr.innerHTML = '<td><input type="hidden" class="p_id" value="' + p_id + '" />' + p_name + '</td>'
-								+ '<td>' + p_price + ' ￥ </td>'
+								+ '<td>￥' + p_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</td>'
 								+ '<td><input type="number" class="p_discount" min="0" step="10" max="100" value="0" id="'+num+'p_discount"'
 								+ 'onChange="calcPrice('+ num +',' + p_price + ',0)"/> %</td>'
 								+ '<td><input type="number" class="p_amount" min="1" step="1" max="100" value="1" id="'+num+'p_amount"'
 								+ 'onChange="calcPrice('+ num +',' + p_price + ',1)"/> 個</td>'
-								+ '<td><input type="hidden" class="allprice" value="' + p_price + '" id="'+num+'p_allprice" /><span id="'+ num + 'td">' +  p_price + '</span> ￥ </td>'
+								+ '<td>￥<input type="hidden" class="allprice" value="' + p_price + '" id="'+num+'p_allprice" /><span id="'+ num + 'td">' +  p_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '</span> </td>'
 								+ '<td><input type="button" value="-" onClick="cancle(' + num + ')"/></td>'
 								+ '<td><input type="hidden" class="number" value="' + num + '" /></td>';
 			}
@@ -154,7 +154,7 @@
 				res += Number(all[i].value);
 				i = i+1;
 			}
-			document.querySelector('#all').innerHTML = res;
+			document.querySelector('#all').innerHTML = res.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
 		
 		let calcPrice = function(num,p_price,state) {
@@ -164,7 +164,7 @@
 			const result = Math.ceil(dcprice * p_amount);
 
 			let td = document.getElementById(num+'td');
-			td.innerHTML = result; 
+			td.innerHTML = result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
 			document.getElementById(num+'p_allprice').value = result;
 
 			calcAllPrice();

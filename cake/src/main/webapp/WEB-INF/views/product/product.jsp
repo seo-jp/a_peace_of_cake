@@ -62,9 +62,9 @@
 					</tr>
 					<tr>
 					<th><label for="searchP_price">価格</label></th>
-						<td><input type="number" name="searchP_price"
+						<td><span>￥</span> <input type="number" name="searchP_price"
 							id="searchP_price" min="1" max="1000000"
-							value="${search.searchP_price}" /> <span>￥</span></td>
+							value="${search.searchP_price}" /></td>
 					<th><label for="searchP_exipdate">賞味期限</label></th>
 						<td><input type="number" name="searchP_exipdate"
 							id="searchP_exipdate" min="1" max="5000"
@@ -109,7 +109,7 @@
 
 						<td onClick="productEdit(${list.p_id})">${list.p_name}</td>
 
-						<td>${list.p_price }￥</td>
+						<td>￥<fmt:formatNumber value="${list.p_price }" pattern="#,###,###" /></td>
 
 						<td><c:if test="${list.p_state eq '0'.charAt(0) }">販売中</c:if>
 							<c:if test="${list.p_state eq '1'.charAt(0) }">販売中止</c:if></td>

@@ -84,7 +84,7 @@
 				</table>
 			</form>
 		</div>
-		<p class="result_p">${paging.totalCount}件のデータがあります。 : 総売上は <span>${sum} ￥</span>です。</p>
+		<p class="result_p">${paging.totalCount}件のデータがあります。 : 総売上は <span>￥<fmt:formatNumber value="${sum}" pattern="#,###,###" /></span>です。</p>
 		<div class="edit_box">
 			<ul>
 				<li><a onClick="saleListAll()">全売上一覧</a></li>
@@ -114,8 +114,8 @@
 							<c:if test="${list.s_state eq '1'.charAt(0) }">払い戻し</c:if></td>
 						<td>${list.s_amount}個</td>
 						<td>${list.s_discount}%</td>
-						<td>${list.s_price}￥</td>
-						<td>${list.s_allprice}￥</td>
+						<td>￥<fmt:formatNumber value="${list.s_price }" pattern="#,###,###" /></td>
+						<td>￥<fmt:formatNumber value="${list.s_allprice }" pattern="#,###,###" /></td>
 						<td><fmt:formatDate value="${list.s_regdate }"
 								pattern="yyyy.MM.dd HH時mm分" /></td>
 					</tr>

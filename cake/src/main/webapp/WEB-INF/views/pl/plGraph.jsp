@@ -45,7 +45,7 @@
 		
 		<canvas id="myChart" style="height:530px;"></canvas>
 		
-		<table class="plTb">
+		<%-- <table class="plTb">
 			<tr>
 				<th> </th>
 				<c:forEach items="${list}" var="list">
@@ -56,24 +56,24 @@
 			<tr class="tr1">
 				<td> 売上 </td>
 				<c:forEach items="${list}" var="list">
-					<td>${list.s_data}</td>
+					<td><fmt:formatNumber value="${list.s_data }" pattern="#,###,###" /></td>
 				</c:forEach>
 			</tr>
 			
 			<tr class="tr2">
 				<td> 支出 </td>
 				<c:forEach items="${list}" var="list">
-					<td>${list.o_data}</td>
+					<td>￥<fmt:formatNumber value="${list.o_data }" pattern="#,###,###" /></td>
 				</c:forEach>
 			</tr>
 			
 			<tr class="tr3">
 				<td> 経費 </td>
 				<c:forEach items="${list}" var="list">
-					<td>${list.sp_data}</td>
+					<td>￥<fmt:formatNumber value="${list.sp_data }" pattern="#,###,###" /></td>
 				</c:forEach>
 			</tr>
-		</table>
+		</table> --%>
 		
 	</div>
 	
@@ -156,11 +156,13 @@
 					}]
 			    },
 			    options: {
-			        maintainAspectRatio: true, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
 			        scales: {
 			            yAxes: [{
 			                ticks: {
-			                    beginAtZero:true
+			                	callback: function(value, index, values) {
+									value = Math.floor(value);
+			                        return '￥' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				                }
 			                }
 			            }]
 			        }

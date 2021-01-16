@@ -91,7 +91,7 @@
 					</tr>
 	
 					<tr>
-						<td><input type="submit" value="SEARCH" /></td>
+						<td><input type="submit" value="検索" /></td>
 					</tr>
 				</table>
 			</form>
@@ -125,8 +125,8 @@
 							alt="${list.o_name}" /></td>
 
 						<td>${list.o_name}</td>
-						<td>${list.i_price }￥</td>
-						<td>${list.o_price }￥</td>
+						<td>￥<fmt:formatNumber value="${list.i_price }" pattern="#,###,###" /></td>
+						<td>￥<fmt:formatNumber value="${list.o_price }" pattern="#,###,###" /></td>
 
 						<td><c:if test="${list.o_state eq '0'.charAt(0) }">配送待ち</c:if>
 							<c:if test="${list.o_state eq '1'.charAt(0) }">配送中</c:if> <c:if

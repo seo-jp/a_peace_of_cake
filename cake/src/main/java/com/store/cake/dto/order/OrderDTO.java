@@ -59,7 +59,7 @@ public class OrderDTO {
 	public int getI_price() {
 		return i_price;
 	}
-	public void setI_price(int o_i_price) {
+	public void setI_price(int i_price) {
 		this.i_price = i_price;
 	}
 	public String getI_img() {

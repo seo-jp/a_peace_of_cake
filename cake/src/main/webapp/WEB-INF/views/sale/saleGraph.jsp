@@ -102,11 +102,13 @@
 			        }]
 			    },
 			    options: {
-			        maintainAspectRatio: true, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
 			        scales: {
 			            yAxes: [{
 			                ticks: {
-			                    beginAtZero:true
+			                	callback: function(value, index, values) {
+									value = Math.floor(value);
+			                        return '￥' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				                }
 			                }
 			            }]
 			        }
