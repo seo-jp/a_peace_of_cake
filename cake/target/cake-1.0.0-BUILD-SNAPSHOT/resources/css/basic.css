@@ -1,0 +1,750 @@
+@charset "UTF-8";
+
+/* basic */
+*{margin:0;padding:0;}
+li {list-style: none;}
+a {text-decoration: none; outline: none; cursor: pointer;}
+textarea, select, input {outline: 0; background: #fff;	 -webkit-appearance: none;}
+input[type=radio]{ width: 20px;
+					height: 20px;
+					border-radius: 50%;
+					border: 1px solid #fff;
+}
+input[type="radio"]:checked{ background-color:  rgba(255, 27, 27, 0.1); }
+input[type=checkbox]{ border: 1px solid #ddd; }
+input[type="checkbox"]:checked{ background-color:  rgba(255, 27, 27, 0.1); }
+input[type=date]{ width: 138px; }
+
+body {margin: 0; padding: 0;}
+h1, h2, h3, h4, h5, h6 { font-size:100%;   font-weight:normal;} 
+fieldset, img, abbr,acronym { border:0 none; } 
+ul { list-style:none; }
+table {border-collapse: separate;border-spacing:0;border:0 none;}
+caption, th, td {font-weight: normal;}
+address, caption, strong, em, cite {font-weight:normal;font-style:normal;}
+ins { text-decoration:none; }
+del { text-decoration:line-through; }
+blockquote:before, blockquote:after, q:before, q:after { content:""; }
+blockquote,q { quotes:"" ""; }
+hr { display:none; }
+*{margin:0px; padding:0px; -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; box-sizing: border-box;}
+
+/* margin */
+.Lm5 { margin-left: 5px;}
+.Rm5 { margin-right: 5px;}
+
+/* logo */
+h1 img {
+	width: 186px;
+}
+
+/* bg */
+.container {
+	width: 100wv;
+	height: 100vh;
+    background: url("../images/common/main_bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+
+/* header */
+
+header {
+	width: 100%;
+	float: left;
+	/*padding: 35px 0 0 35px;*/ padding: 10px 0 0 35px;
+	/* height: 265px; */
+	position: relative;
+}
+
+header h1 {
+	float: left;
+}
+
+.mypage_box {
+	width: 278px;
+	height: 83px;
+	position: absolute;
+	right: 0px;
+	background: url("../images/common/main_login_bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mypage_box li {
+	width: 70%;
+	padding-left: 15px;
+	float: left;
+}
+
+.mypage_box li:last-child{
+	width:30%;
+	padding-left: 0px;
+}
+
+.mypage_box img {
+	width: 57px;
+	float: left;
+	margin-top: 14px;
+}
+
+.mypage_box span {
+	width: 1%;
+	height: 83px;
+	display: table-cell;
+	vertical-align: middle;
+	padding-left:10px;
+}
+
+.mypage_box li a {
+	width: 1%;
+	height: 83px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.mypage_box li a:hover {
+	color: #fff;
+}
+
+header nav {
+	margin: 0 auto;
+	/* width: 921px; */ width: 976px;
+	/* margin-top: 38px; */ margin-top: 13px;
+}
+
+header ul {
+	float: left;
+	width: 100%;
+}
+
+header nav ul li {
+	float: left;
+	width: 146px;
+	height: 146px;
+	/* margin-right: 9px; */ margin-right: 20px;
+	background: #fff;
+	border-radius: 50%;
+	text-align: center;
+	cursor: pointer;
+}
+
+header nav ul li:hover {
+	background: rgba(255,255,255,0.5);
+}
+
+header nav ul li:last-child{
+	margin-right: 0px;
+}
+
+header nav ul li a{
+	width: 1%;
+	height: 146px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+header nav ul li a span {
+	display: block;
+	font-size: 14px;
+	color: #212121;
+	font-weight: bold;
+}
+
+header nav ul li a img{
+	height: 74px;
+}
+
+/* content */
+
+.content {
+	width: 100%;
+	float: left;
+}
+
+.content_wrap {
+	/* width: 1064px; */ width: 1264px;
+	/* height: 605px; */ height: 690px;
+	margin: 0 auto;
+	border-radius: 80px;
+	background: #fff;
+}
+
+.product,.saleList,.stock,.pllist,.order,.orderList {
+	width: 100%;
+	height: 675px;
+	float: left;
+	padding: 40px;
+}
+
+/* search box */
+
+.search_box {
+	width: 100%;
+	height: 150px;
+	float: left;
+	padding: 20px 40px;
+	background: url("../images/common/option_bg.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin-bottom: 10px;
+}
+
+.search_box select,.search_box label,.search_box input,.search_box a,.search_box th,.search_box span {
+	font-size: 14px;
+}
+
+.sort_box {
+	width: 25%;
+	float: left;	
+}
+
+.Graph_v.viewType_box {
+	width: auto;
+	float: left;	
+	margin-bottom: 0px;
+}
+
+.Graph_v.viewType_box input[type=radio]{
+	border: 1px solid #ddd;
+}
+
+.viewType_box {
+	width: 100%;
+	float: left;	
+	margin-bottom: 20px;
+}
+
+.viewType_box ul li{
+	float: left;
+	margin-right: 10px;
+}
+
+
+.sort_box select {
+	display: block;
+	width: 130px;
+	height: 30px;
+	border: 1px solid #fff;
+	padding-left: 10px;
+}
+
+
+.search_box table {
+	width: 75%;
+	height: 110px;
+	float: right;
+	position: relative;
+	margin-top: -3px;
+}
+
+.hidden_box {
+	display: none;	
+}
+
+.search_box table input[type=text],.search_box table input[type=date],.search_box table input[type=number]  {
+	height: 25px;
+	border: 1px solid #fff;
+	background: #fff;
+}
+
+.search_box table input[type=text],.search_box table input[type=number]{
+	padding: 0 10px;
+}
+
+.search_box table input[type=number]{
+	width: 80px;
+}
+
+.search_box table th {
+	font-weight: bold;	
+	text-align: left;
+	padding: 0 10px;
+}
+
+.search_box table tr td label:nth-child(3) {
+	margin-left: 10px;	
+}
+
+.search_box table tr:last-child input {
+	position: absolute;
+	width: 100px;
+	height: 25px;
+	border: 1px solid #fff;
+	cursor: pointer;
+	right: 0;
+	bottom: 0;
+}
+
+.search_box tr:last-child input:hover{
+	background:rgba(255,255,255,0.5);
+}
+
+
+.result_p {
+	float: left;
+	font-size: 14px;
+	font-style: italic;
+}
+
+.edit_box {
+	float: right;
+}
+
+.edit_box ul li {
+	width: 100px;
+	float: left;
+	margin-left: 10px;
+	border: 1px solid #d8d8d8;
+	padding: 4px 0;
+	border-radius: 6px;
+	font-size: 14px;
+	background: #fafafa;
+	text-align: center;
+}
+
+.edit_box ul li:hover {
+	background: #fafafa2b;
+}
+
+.edit_box ul li a {
+	width: 100%;
+	float: left;
+}
+
+/* list */
+
+.list_wrap {
+	width: 100%;
+	height: 400px;
+	float: left;
+	margin-top: 15px;
+	overflow-y: auto;
+}
+
+.list {
+	width: 100%;
+}
+
+.list tbody {
+	width: 100%;
+	text-align: center;
+}
+
+.list tbody tr th {
+	height: 40px;
+	border: 1px solid #ddd;
+	border-right: 0px;
+	font-size: 14px;
+}
+
+.list tbody tr td {
+	padding: 10px;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	font-size: 14px;
+}
+
+.list img {
+	width: 80px;
+	height: 80px;
+	border: 1px solid #ddd;
+}
+
+.list tbody tr td input[type=number],.add_list tbody tr td input[type=number]{
+	border: 1px solid #ddd;
+	height: 40px;
+	border-radius: 10px;
+	padding-left: 10px;
+}
+
+.add_list tbody tr td input[type=button],
+.list tbody tr td input[type=submit],.list tbody tr td input[type=button]{
+	width: 100%;
+	height: 40px;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	background: #fafafa;
+	border-radius: 10px;
+	font-size: 15px;
+}
+
+.add_list tbody tr td input[type=button]:hover,
+.list tbody tr td input[type=submit]:hover,.list tbody tr td input[type=button]:hover {
+	background: #fafafa2b;
+}
+
+
+/* view_form */
+
+.view_form {
+    float: left;
+    width: 100%;
+    padding: 100px;
+    height: 100%;
+}
+
+.view_form table tr td, .view_form table tr td label, .view_form table tr td input,.view_form table tr th, .view_form table textarea{
+	font-size: 15px;
+}
+
+.view_form table {
+	width: 100%;
+	border-top: 1px solid #ececec;
+}
+
+.view_form table tr th{
+	width: 12%;
+	padding: 10px;
+	background: #fafafa;
+	border-bottom: 1px solid #ececec;
+	border-left: 1px solid #ececec;
+}
+
+.view_form table tr td{
+	padding: 10px;
+	background: #fafafa2b;
+	border-bottom: 1px solid #ececec;
+	border-right: 1px solid #ececec;
+}
+
+.view_form table tr td img {
+	width: 80px;
+	height: 80px;
+	border: 1px solid #ddd;
+}
+
+.view_form table tr td input {
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	background: #fafafa2b;
+}
+
+.view_form table tr td textarea {
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	resize: none;
+}
+
+.form_btn_box {
+	float: right;
+	margin-top: 20px;
+}
+
+.form_btn_box input,.form_btn_box a{
+	width: 100px;
+	height: 40px;
+	border: 1px solid #ddd;
+	cursor: pointer;
+	background: #fafafa;
+	border-radius: 10px;
+	font-size: 15px;
+}
+
+.form_btn_box a{
+	float: left;
+	text-align: center;
+	line-height: 34px;
+	margin-right: 20px;
+}
+
+.form_btn_box input:hover,.form_btn_box a:hover {
+	background: #fafafa2b;
+}
+
+.deleteFile {
+	font-style:italic;
+}
+
+#p_state1,#p_state2,#i_state1,#i_state2{
+	width: 20px;
+	height: 20px;
+	border: 1px solid #ddd;
+	margin-right: 20px;
+}
+
+#p_exipdate, #i_exipdate {
+	width: 60px;
+}
+#p_price, #i_price {
+	width: 100px;
+}
+
+/* add List */
+
+.add_list_wrap {
+	width: 90%;
+	height: 560px;
+	float: left;
+	margin: 3% 5% 1% 5%;
+	position:relative;
+}
+
+.add_list {
+	width: 100%;
+}
+
+.add_list tbody {
+	width: 100%;
+	text-align: center;
+	border-radius:40px;
+}
+
+.add_list tbody tr th {
+	height: 40px;
+	border: 1px solid #ddd;
+	border-right: 0px;
+	font-size: 14px;
+}
+
+.add_list tbody tr td {
+	padding: 10px;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	font-size: 14px;
+}
+
+.add_list tbody tr th:last-child,.add_list tbody tr td:last-child{
+	border-right:1px solid #ddd;
+}
+
+.add_list img {
+	width: 80px;
+	height: 80px;
+	border: 1px solid #ddd;
+}
+
+.add_list_wrap .form_btn_box {
+	position: absolute;
+	right: 0;
+	bottom: -45px;
+}
+
+.add_list_wrap .form_btn_box a {
+	margin-right: 0px;
+}
+
+/* page */
+
+.paging {
+	float: left;
+	width: 100%;
+	margin-top: 12px;
+}
+
+.paging ul {
+	display: table;
+	margin: 0 auto;
+}
+
+.paging ul li {
+	float: left;
+	color: #ddd;
+}
+
+.paging ul li:hover {
+	color: rgba(255,211,222,1);
+}
+
+.paging ul li.pageIndex {
+	color: rgba(255,211,222,1);
+	font-weight: bold;
+}
+
+
+
+@media screen and (min-width: 1920px) {
+	.container_wrap{
+		width:1920px;
+		padding:0px;
+		margin:0 auto;
+		float:none;
+	}
+}
+
+@media screen and (min-width: 1023px) and (max-width: 1919px) {
+	
+	header{
+		padding: 10px 0 0 10px;
+	}
+	
+	h1 img {
+		width: 100px;
+	}
+	
+	header nav {
+		float: none;
+		width: 700px;
+		margin: 0 auto;
+	}
+	
+	header nav ul li {
+		width: 100px;
+		height: 100px;
+	}
+	
+	header nav ul li a {
+		height: 100px;
+	}
+	
+	header nav ul li a img {
+		height: 40px;
+	}
+	
+	header nav ul li a span {
+		font-size: 13px;
+	}
+	
+	.mypage_box {
+		top: 23px;
+		width: 130px;	
+	}
+	
+	.mypage_box li {
+		width: 60%;
+		font-size: 12px;
+	}
+	
+	.mypage_box img {
+		display: none;
+	}
+	
+	.mypage_box span {
+		height: 0;
+		padding-left: 0;
+	}
+	
+	.mypage_box li:last-child {
+		width: 40%;
+	}
+	
+	
+	/* content */
+	
+	.content_wrap {
+		width: 1000px;
+		height: 77vh;
+	}
+
+	.search_box {
+		border-radius: 40px;
+		height: 130px;
+		padding: 10px 40px;
+		background-size: 135%;
+	}
+	
+	.search_box select,.search_box label,.search_box input,.search_box a,.search_box th,.search_box span {
+		font-size: 12px;
+	}
+	
+	.sort_box select {
+		height: 20px;
+	}
+	
+	.search_box table input[type=text], .search_box table input[type=date], .search_box table input[type=number]{
+		height: 20px;
+	}
+	
+	.sort_box {
+		width: 28%;
+	}
+	.search_box table {
+		width: 72%;
+	}
+	
+	.result_p {
+		font-size: 12px;
+	}
+	
+	.edit_box ul li {
+		font-size: 12px;
+	}
+	
+	.list_wrap {
+		height: 58%;
+	}
+	
+	.list tbody tr th,.add_list tbody tr th {
+		font-size: 12px;
+		padding: 0;
+		height: 30px;
+	}
+	
+	.list tbody tr td,.add_list tbody tr td {
+		font-size: 12px;
+		padding: 4px;
+	}
+	
+	.add_list tbody tr td input[type=button],.add_list tbody tr td input[type=number],
+	.list tbody tr td input[type=submit],.list tbody tr td input[type=button],.list tbody tr td input[type=number]{
+		height: 25px;
+		font-size: 12px;
+	}
+	
+	.list img,.add_list img {
+		width: 40px;
+		height: 40px;
+		vertical-align: middle;
+	}
+	
+	.view_form {
+		padding: 40px;
+	}
+	
+	.view_form table tr td, .view_form table tr td label, .view_form table tr td input,.view_form table tr th, .view_form table textarea{
+		font-size: 12px;
+	}
+	
+	.paging {
+		margin-top: 5px;
+	}
+	
+	#p_state1, #p_state2, #i_state1, #i_state2 {
+		width: 15px;
+		height: 15px;
+	}
+	
+	.form_btn_box {
+		margin-top: 10px;
+	}
+	
+	.form_btn_box input, .form_btn_box a {
+		font-size: 12px;
+		height: 30px;
+	}
+	
+	.form_btn_box a {
+		line-height: 24px;
+	}
+	
+	.viewType_box {
+		font-size: 12px;
+	}
+	
+	.product,.saleList,.stock,.pllist,.order,.orderList {
+		height: 100%;
+		padding: 20px 40px;
+	}
+	
+	.add_list_wrap {
+		height: 63vh;
+		margin: 0;
+		padding: 40px;
+		width: 100%;
+	}
+	
+	.add_list_wrap .form_btn_box {
+		right: 40px;
+	}
+	
+}
+
+@media screen and (max-width:768px){
+	
+	
+}
+

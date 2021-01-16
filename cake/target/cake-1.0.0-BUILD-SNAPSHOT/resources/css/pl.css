@@ -1,0 +1,151 @@
+@charset "UTF-8";
+
+/* PL */
+
+.search_box table{
+	margin-top: -20px;
+}
+
+.search_box table tr:last-child input {
+	bottom: -20px;
+}
+
+.result_p span{
+	font-weight: bold;
+	color: #0053ff;
+}
+
+
+.tr1 {
+	background: rgba(79, 198, 255, 0.1);
+}
+
+.tr2 {
+	background: rgba(255, 27, 27, 0.1);
+}
+
+.tr3 {
+	background: rgba(255, 99, 132, 0.1);
+}
+
+.list tbody tr th:nth-child(1),.list tbody tr td:nth-child(1){ /* No */
+	width: 5%;
+}
+.list tbody tr th:nth-child(2),.list tbody tr td:nth-child(2){ /* name */
+	width: 20%;
+}
+.list tbody tr th:nth-child(3),.list tbody tr td:nth-child(3){/* state */
+	width: 10%;
+}
+.list tbody tr th:nth-child(4),.list tbody tr td:nth-child(4){/* discount */
+	width: 10%;
+}
+.list tbody tr th:nth-child(5),.list tbody tr td:nth-child(5){ /* regdate */
+	width: 15%;
+	border-right: 1px solid #ddd;
+}
+
+/* GRAPH */
+.pllist_p.result_p{
+	width: 100%;
+	text-align: center;
+	float: left;
+	font-weight: bold;
+}
+
+.plGraph_v.viewType_box input[type="radio"]{
+	border: 1px solid #ddd;
+	margin-top:3px;
+}
+
+.dateSearch {
+	float: left;
+}
+
+.dateSearch input {
+    height: 35px;
+    margin-left: 20px;
+    padding-left: 10px;
+    border: 1px solid #ddd;
+}
+
+#myChart {
+	height: 450px!important;
+}
+
+.plTb{
+	width: 100%;
+	float: left;
+	border-right: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	text-align: center;
+	margin-top: 5px;
+}
+
+.plTb tr{
+	width: 100%;
+}
+
+.plTb tr th{
+	border-bottom: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	padding: 3px;
+}
+
+.plTb tr td{
+	border-bottom: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	padding: 3px;
+}
+
+.plTb tr th:first-child,.plTb tr td:first-child{
+	width: 80px;
+}
+
+/* SPEND FORM */
+
+.spend_form select {
+	width: 150px;
+	height: 40px;
+	border: 1px solid #ddd;
+	padding-left: 10px;
+}
+
+.spend_form.view_form table tr td input {
+	width: 150px;
+}
+
+
+
+@media screen and (min-width: 1023px) and (max-width: 1919px) {
+	
+	
+	.search_box table tr:last-child input{
+		margin-top:0px;
+	}
+	
+	.pllist_p.result_p {
+		margin-bottom: 10px;
+	}
+	
+	.dateSearch input {
+		height: 25px;
+		font-size: 12px;
+	}
+	
+	#myChart {
+		height: 320px!important;
+	}
+	
+	.plTb{
+		font-size: 10px;
+	}
+	
+	.spend_form select {
+		font-size: 12px;
+		height: 25px;
+	}
+	
+	
+	
+}

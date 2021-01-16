@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+.list tbody tr th:nth-child(1),.list tbody tr td:nth-child(1){ /* No */
+	width: 5%;
+}
+.list tbody tr th:nth-child(2),.list tbody tr td:nth-child(2){ /* IMG */
+	width: 12%;
+}
+
+/* order */
+.order .list tbody tr th:nth-child(3),.order .list tbody tr td:nth-child(3){ /* name */
+	width: 25%;
+	background: #fafafa;
+	cursor: pointer;
+}
+.order .list tbody tr td:nth-child(3):hover{ /* name */
+	background: #fafafa2b;
+}
+
+.order .list tbody tr th:nth-child(4),.order .list tbody tr td:nth-child(4){ /* price */
+	width: 15%;
+} /* price */
+.order .list tbody tr th:nth-child(5),.order .list tbody tr td:nth-child(5){ /* state */
+	width: 13%;
+}
+.order .list tbody tr th:nth-child(6),.order .list tbody tr td:nth-child(6), /* exipdate */
+.order .list tbody tr th:nth-child(7),.order .list tbody tr td:nth-child(7){ /* amount */
+	width: 10%;
+}
+
+/* btn */
+
+.list tbody tr th:last-child,.list tbody tr td:last-child{
+	width: 10%;
+	border-right: 1px solid #ddd;
+}
+
+/* orderList */
+
+.orderList .list tbody tr th:nth-child(3),.orderList .list tbody tr td:nth-child(3){
+	width: 20%;
+}/* name */
+.orderList .list tbody tr th:nth-child(4),.orderList .list tbody tr td:nth-child(4),/* price */
+.orderList .list tbody tr th:nth-child(5),.orderList .list tbody tr td:nth-child(5){/* all price */
+	width: 12%;
+}
+
+.orderList .list tbody tr th:nth-child(8),.orderList .list tbody tr td:nth-child(8){/* date */
+	width: 15%;
+}
+
+.orderList .list tbody tr th:nth-child(7),.orderList .list tbody tr td:nth-child(7),/* amount */
+.orderList .list tbody tr th:nth-child(6),.orderList .list tbody tr td:nth-child(6){ /* state */
+	width: 7%;
+}

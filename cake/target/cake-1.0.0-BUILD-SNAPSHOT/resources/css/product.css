@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+.list tbody tr th:nth-child(1),.list tbody tr td:nth-child(1){
+	width: 5%;
+}
+.list tbody tr th:nth-child(1) input,.list tbody tr td:nth-child(1) input{
+	width: 20px;
+	height: 20px;
+}
+.list tbody tr th:nth-child(2),.list tbody tr td:nth-child(2){
+	width: 5%;
+}
+.list tbody tr th:nth-child(3),.list tbody tr td:nth-child(3){
+	width: 12%;
+}
+.list tbody tr th:nth-child(4),.list tbody tr td:nth-child(4){
+	width: 20%;
+	background: #fafafa;
+	cursor: pointer;
+}
+.list tbody tr td:nth-child(4):hover{
+	background: #fafafa2b;
+}
+.list tbody tr th:nth-child(5),.list tbody tr td:nth-child(5){
+	width: 10%;
+}
+.list tbody tr th:nth-child(6),.list tbody tr td:nth-child(6){
+	width: 10%;
+}
+.list tbody tr th:nth-child(7),.list tbody tr td:nth-child(7){
+	width: 20%;
+}
+.list tbody tr th:nth-child(8),.list tbody tr td:nth-child(8){
+	width: 8%;
+}
+.list tbody tr th:nth-child(9),.list tbody tr td:nth-child(9){
+	width: 15%;
+	border-right: 1px solid #ddd;
+}
+
+
+
+/* productStockForm */
+
+.add_list tbody tr th:nth-child(1),.add_list tbody tr td:nth-child(1){ /* No */
+	width: 5%;
+}
+.add_list tbody tr th:nth-child(2),.add_list tbody tr td:nth-child(2){ /* IMG */
+	width: 12%;
+}
+.add_list tbody tr th:nth-child(3),.add_list tbody tr td:nth-child(3){ /* name */
+	width: 20%;
+}
+.add_list tbody tr th:nth-child(4),.add_list tbody tr td:nth-child(4){ /* price */
+	width: 13%;
+}
+.add_list tbody tr th:nth-child(5),.add_list tbody tr td:nth-child(5){ /* memo */
+	width: 20%;
+}
+.add_list tbody tr th:nth-child(6),.add_list tbody tr td:nth-child(6){ /* exip */
+	width: 10%;
+}
+.add_list tbody tr th:nth-child(7),.add_list tbody tr td:nth-child(7){ /* amount */
+	width: 10%;
+}
+.add_list tbody tr th:last-child,.add_list tbody tr td:last-child{
+	width: 10%;
+	border-right: 1px solid #ddd;
+}
+
+@media screen and (min-width: 1023px) and (max-width: 1919px) {
+	
+}

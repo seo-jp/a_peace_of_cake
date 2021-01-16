@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.store.cake.dao.pl.PLDAO">
+	
+	<select id="getPLList" parameterType="hashmap"
+		resultType="com.store.cake.dto.pl.PLDTO">
+		SELECT * FROM 
+    	( SELECT S_ID, O_ID, SP_ID, CATEGORY, NAME, AMOUNT, PRICE, REGDATE, ROWNUM R FROM
+     		(SELECT S_ID, null O_ID, null SP_ID, '0' CATEGORY, S_NAME NAME, S_AMOUNT AMOUNT, S_ALLPRICE PRICE, S_REGDATE REGDATE FROM SALE S
+      		 WHERE S_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+      		 AND REGEXP_LIKE(S_STATE, '0')
+      		 UNION ALL
+      		 SELECT null S_ID,O_ID, null SP_ID, '1' CATEGORY, O_NAME NAME, O_AMOUNT AMOUNT, (O_PRICE*-1) PRICE, O_REGDATE REGDATE FROM "ORDER" O
+       		 WHERE O_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+       		 AND REGEXP_LIKE(O_STATE, '2')
+      		 UNION ALL
+      		 SELECT null S_ID,null O_ID, SP_ID, '2' CATEGORY, SP_NAME NAME, null AMOUNT, (SP_PRICE*-1) PRICE, SP_REGDATE REGDATE FROM SPEND SP
+      		 WHERE SP_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND SP_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+    	) ORDER BY REGDATE) 
+		WHERE R >= #{startRow} AND R &lt;= #{endRow}
+	</select>
+	
+	<select id="getPLTotalCount" parameterType="hashmap" resultType="HashMap">
+    	SELECT NVL(SUM(CNT),0) CNT , NVL(SUM(PRICE),0) SUM FROM 
+   			(SELECT CNT , PRICE FROM 
+        		(SELECT NVL(COUNT(*),0) CNT, NVL(SUM(S_PRICE),0) PRICE FROM SALE S
+         		 WHERE S_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND S_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+         		 AND REGEXP_LIKE(S_STATE, '0')
+         		 UNION ALL
+         		 SELECT NVL(COUNT(*),0) CNT, NVL(SUM(O_PRICE*-1),0) PRICE FROM "ORDER" O
+         		 WHERE O_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND O_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+         		 AND REGEXP_LIKE(O_STATE, '2')
+         		 UNION ALL
+         	     SELECT NVL(COUNT(*),0) CNT, NVL(SUM(SP_PRICE*-1),0) PRICE FROM SPEND P
+         		 WHERE SP_REGDATE >= TO_DATE(#{showDateFrom},'YYYY-MM-DD') AND SP_REGDATE &lt; TO_DATE(#{showDateTo},'YYYY-MM-DD')+1
+    		))
+    </select>
+    
+    <insert id="spendInsert" parameterType="hashmap">
+    	INSERT INTO SPEND (SP_ID, SP_NAME, SP_PRICE, SP_REGDATE)
+			VALUES(SPEND_ID_SEQ.NEXTVAL,#{sp_name, jdbcType=VARCHAR},#{sp_price, jdbcType=INTEGER},SYSDATE)
+    </insert>
+	
+	<select id="getPLGraphDay" parameterType="hashmap" resultType="com.store.cake.dto.pl.PLGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) S_DATA , NVL(C.CNT,0) O_DATA, NVL(D.CNT,0) SP_DATA
+		FROM (
+            SELECT DECODE(LENGTH(ROWNUM-1), 1, '0'||TO_CHAR(ROWNUM-1), TO_CHAR(ROWNUM-1)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= 24 )A 
+		    LEFT OUTER JOIN 
+		        (SELECT TO_CHAR ( S_REGDATE, 'HH24' ) S_REGDATE, SUM(s_allprice) CNT
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM-DD' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM-DD' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'HH24' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( O_REGDATE, 'HH24' ) O_REGDATE, SUM(o_price*-1) CNT
+		            FROM "ORDER"
+		            WHERE O_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM-DD' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM-DD' ) + 0.99999
+		            AND REGEXP_LIKE(O_STATE, '2')
+		            GROUP BY TO_CHAR (O_REGDATE, 'HH24' ) )C
+		            ON(A.S_REGDATE = C.O_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( SP_REGDATE, 'HH24' ) SP_REGDATE, SUM(sp_price*-1) CNT 
+		            FROM SPEND
+		            WHERE SP_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM-DD' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM-DD' ) + 0.99999
+		            GROUP BY TO_CHAR (SP_REGDATE, 'HH24' ) )D
+		            ON(A.S_REGDATE = D.SP_REGDATE)
+		    ORDER BY A.S_REGDATE
+	</select>
+	
+	<select id="getPLGraphMonth" parameterType="hashmap" resultType="com.store.cake.dto.pl.PLGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) S_DATA , NVL(C.CNT,0) O_DATA, NVL(D.CNT,0) SP_DATA
+		FROM (
+            SELECT DECODE(LENGTH(ROWNUM), 1, '0'||TO_CHAR(ROWNUM), TO_CHAR(ROWNUM)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= TO_NUMBER(SUBSTR(LAST_DAY(TO_CHAR(TO_DATE(#{showDateFrom},'YYYY-MM'),'YYYYMM')||'01'), 7, 2)) )A 
+		    LEFT OUTER JOIN 
+		        (SELECT TO_CHAR ( S_REGDATE, 'DD' ) S_REGDATE, SUM(s_allprice) CNT
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'DD' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( O_REGDATE, 'DD' ) O_REGDATE, SUM(o_price*-1) CNT
+		            FROM "ORDER"
+		            WHERE O_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM' ) + 0.99999
+		            AND REGEXP_LIKE(O_STATE, '2')
+		            GROUP BY TO_CHAR (O_REGDATE, 'DD' ) )C
+		            ON(A.S_REGDATE = C.O_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( SP_REGDATE, 'DD' ) SP_REGDATE, SUM(sp_price*-1) CNT 
+		            FROM SPEND
+		            WHERE SP_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY-MM' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY-MM' ) + 0.99999
+		            GROUP BY TO_CHAR (SP_REGDATE, 'DD' ) )D
+		            ON(A.S_REGDATE = D.SP_REGDATE)
+		    ORDER BY A.S_REGDATE
+	</select>
+	
+	<select id="getPLGraphYear" parameterType="hashmap" resultType="com.store.cake.dto.pl.PLGraphDTO">
+		SELECT A.S_REGDATE LABEL, NVL(B.CNT,0) S_DATA , NVL(C.CNT,0) O_DATA, NVL(D.CNT,0) SP_DATA
+		FROM (
+			SELECT DECODE(LENGTH(ROWNUM), 1, '0'||TO_CHAR(ROWNUM), TO_CHAR(ROWNUM)) S_REGDATE, 0 CNT 
+		    FROM DICT 
+		    WHERE ROWNUM &lt;= 12 )A            
+            LEFT OUTER JOIN 
+		        (SELECT TO_CHAR ( S_REGDATE, 'MM' ) S_REGDATE, SUM(s_allprice) CNT
+		            FROM SALE
+		            WHERE S_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY' ) + 0.99999
+		            AND REGEXP_LIKE(S_STATE, '0')
+		            GROUP BY TO_CHAR (s_regdate, 'MM' ) )B 
+		            ON(A.S_REGDATE = B.S_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( O_REGDATE, 'MM' ) O_REGDATE, SUM(o_price*-1) CNT
+		            FROM "ORDER"
+		            WHERE O_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY' ) + 0.99999
+		            AND REGEXP_LIKE(O_STATE, '2')
+		            GROUP BY TO_CHAR (O_REGDATE, 'MM' ) )C
+		            ON(A.S_REGDATE = C.O_REGDATE)
+            LEFT OUTER JOIN
+                (SELECT TO_CHAR ( SP_REGDATE, 'MM' ) SP_REGDATE, SUM(sp_price*-1) CNT 
+		            FROM SPEND
+		            WHERE SP_REGDATE BETWEEN TO_DATE ( #{showDateFrom}, 'YYYY' )
+		            AND TO_DATE ( #{showDateTo}, 'YYYY' ) + 0.99999
+		            GROUP BY TO_CHAR (SP_REGDATE, 'MM' ) )D
+		            ON(A.S_REGDATE = D.SP_REGDATE)
+		    ORDER BY A.S_REGDATE
+	</select>
+	
+
+</mapper>
