@@ -69,14 +69,14 @@
     
     <select id="chkStock" parameterType="hashmap" resultType="int">
     	<!-- 재고값 - pos값이 양수(값이있음) 일때 1, 0일때 (값이 딱 맞음) 1, 음수(재고부족) 일때 0출력 -->
-    	SELECT DECODE(SIGN(A-#{s_amount}),1, 1,0,1,0) FROM
-    	(SELECT NVL(SUM(S_AMOUNT),0) A FROM STOCK WHERE S_P_ID = ${s_p_id})
+    	SELECT DECODE(SIGN(A-#{s_amount}),1,1,0,1,0) FROM
+    	(SELECT NVL(SUM(S_AMOUNT),0) A FROM STOCK WHERE S_P_ID = ${s_p_id} AND S_STATE = 0)
     </select>
     
     <update id="stockUpdate2" parameterType="hashmap">
     	UPDATE STOCK SET S_AMOUNT = (S_AMOUNT - 1)
     	WHERE S_ID = (SELECT MAX(S_ID) KEEP (DENSE_RANK FIRST ORDER BY S_REGDATE) S_ID FROM STOCK
-            		  WHERE S_P_ID = #{s_p_id} AND S_AMOUNT > 0 GROUP BY S_P_ID)
+            		  WHERE S_P_ID = #{s_p_id} AND S_AMOUNT > 0 AND S_STATE = 0 GROUP BY S_P_ID)
     </update>
     
     <update id="stockStateUpdate">

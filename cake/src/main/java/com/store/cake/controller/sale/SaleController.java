@@ -174,9 +174,11 @@ public class SaleController {
 		    // check
 		    Loop:
 		    for(int i=0; i<p_ids.length; i++) {
+		    	System.out.println(p_ids[i] + " / " + p_amounts[i] + " 개 ");
 		    	map.put("s_p_id", p_ids[i]);
 		    	map.put("s_amount", p_amounts[i]);
 		    	result = Sdao.chkStock(map);
+		    	System.out.println(result + " : 결과값 ");
 		    	if(result == 0) { 
 		    		throw new Exception();
 		    		//break Loop;
@@ -194,6 +196,7 @@ public class SaleController {
 					// insert
 					dao.saleInsert(map);
 					// stock setting
+					System.out.println(p_ids[i] + " :: " + p_amounts[i]);
 					for(int j=0; j<Integer.parseInt(p_amounts[i]); j++)
 						Sdao.stockUpdate2(map);
 					// state update

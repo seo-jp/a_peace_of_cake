@@ -392,6 +392,7 @@
 	
 	.pos_search form div:nth-child(1) input {
 		height: 30px;
+		width: 200px;
 	}
 	
 	.pos_search form div:nth-child(2) input {

@@ -24,12 +24,12 @@
 					<th><label for="sp_name">カテゴリー</label></th>
 					<td>
 						<select name="sp_name">
-							<option value="인건비">人件費</option>
-							<option value="전기세">電気料金</option>
-							<option value="가스비">ガス料金</option>
-							<option value="수도세">水道料金</option>
-							<option value="임대료">賃貸</option>
-							<option value="기타">その他</option>
+							<option value="人件費">人件費</option>
+							<option value="電気料金">電気料金</option>
+							<option value="ガス料金">ガス料金</option>
+							<option value="水道料金">水道料金</option>
+							<option value="賃貸">賃貸</option>
+							<option value="その他">その他</option>
 						</select>
 					</td>
 				</tr>
