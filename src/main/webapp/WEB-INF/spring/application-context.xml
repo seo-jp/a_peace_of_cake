@@ -11,11 +11,17 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/tx 
 http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-<bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-  		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-  		<property name="url" value="jdbc:oracle:thin:@localhost:1521/xepdb1"></property>
-  		<property name="username" value="CAKE"></property>
-  		<property name="password" value="1234"></property>
+<!-- properties -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations" value="classpath:/jdbc-postgre.properties" />
+        <property name="fileEncoding" value="UTF-8" />
+    </bean>
+
+	<bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  		<property name="driverClassName" value="${jdbc.driverClassName}" />
+  		<property name="url" value="${jdbc.url}"></property>
+  		<property name="username" value="${jdbc.username}"></property>
+  		<property name="password" value="${jdbc.password}"></property>
   </bean>
   
   <!-- Mybatis 설정하기  -->
